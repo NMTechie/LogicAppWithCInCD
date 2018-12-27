@@ -1,0 +1,1 @@
+This is the sample of how to deal with Logic App with ARM template and JSON format along with power shell script to create supportive element 
