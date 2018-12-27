@@ -1,0 +1,46 @@
+{
+  "integrationAccountResourceGroupName": "ipaas-dev-we-shared-services-01",
+  "integrationAccountName": "nok-ipaas-dev-we-iac-01",
+  "integrationAccountLocationName": "westeurope",
+  "integrationAccountPricingTier": "Standard",
+  "maps": [
+    {
+      "name": "RequisitionXslt",
+      "type": "Xslt",
+      "contentType": "application/xml",
+      "FilePath": "Maps/RequisitionXslt.xslt"
+    },
+    {
+      "name": "OfferXslt",
+      "type": "Xslt",
+      "contentType": "application/xml",
+      "FilePath": "Maps/OfferXslt.xslt"
+    },
+    {
+      "name": "JobSubmissionXslt",
+      "type": "Xslt",
+      "contentType": "application/xml",
+      "FilePath": "Maps/JobSubmissionXslt.xslt"
+    },
+    {
+      "name": "OrganizationMasterXslt",
+      "type": "Xslt",
+      "contentType": "application/xml",
+      "FilePath": "Maps/OrganizationMasterXslt.xslt"
+    },
+    {
+      "name": "JobFieldXslt",
+      "type": "Xslt",
+      "contentType": "application/xml",
+      "FilePath": "Maps/JobField.xslt"
+    },
+    {
+      "name": "LocationXslt",
+      "type": "Xslt",
+      "contentType": "application/xml",
+      "FilePath": "Maps/LocationXslt.xslt"
+    }
+  ],
+  "schemas": [    
+  ]
+}

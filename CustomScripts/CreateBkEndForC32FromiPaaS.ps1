@@ -1,0 +1,2 @@
+$apicontext= New-AzureRmApiManagementContext -ResourceGroupName "ipaas-int-we-apim-01" -ServiceName "nok-ipaas-int-we-apm-01"
+New-AzureRmApiManagementBackend -Context $apicontext -BackendId "C32BackEnd" -Protocol http -url "https://10.130.221.176/" -SkipCertificateChainValidation 1

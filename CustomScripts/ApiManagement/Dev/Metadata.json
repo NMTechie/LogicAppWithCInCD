@@ -1,0 +1,122 @@
+{
+  "ResourceGroupName": "ipaas-dev-we-apim-01",
+  "ApimManagementName": "nok-ipaas-dev-we-apm-01",
+  "products": [
+    {
+      "Id": "HRAS4UOTX32",
+      "properties": {
+        "displayName": "HRAS4UOTX32",
+        "description": "Contains APIs for HR Analytics flow.",
+        "state": "Published",
+        "subscriptionRequired": false,
+        "subscriptionCountLimit": 1,
+        "approvalRequired": false,
+        "terms": ""
+      },
+      "groups": [
+        {
+          "name": "Administrators"
+        }
+      ],
+      "apis": [
+        {
+          "ApiId": "OurTalentBulkAPI",
+          "properties": {
+            "displayName": "OurTalentBulkAPI",
+            "description": "",
+            "path": "OurTalentBulkAPI",
+            "specificationFormat": "wsdl",
+			"wsdlServiceName":"IntegrationManagementService",
+			"wsdlEndpointName":"IntegrationManagementServiceHttpPort",
+            "specificationPath": "Apis\\EnterpriseBulkAPIMgmtAPI.wsdl",
+            "policySettingFile": "OurTalentBulkAPIPolicy.xml"
+          }
+        },
+		{
+          "ApiId": "RequisitionAPI",
+          "properties": {
+            "displayName": "RequisitionAPI",
+            "description": "Webservice for Requisition to x32 BW system",
+            "path": "RequisitionAPI",
+            "specificationFormat": "wsdl",
+			"wsdlServiceName":"HA_REQ_TALEO_WSSN",
+			"wsdlEndpointName":"HA_REQ_TALEO_WSBN",
+            "specificationPath": "Apis\\RequisitionX32.wsdl",
+            "policySettingFile": "x32ReqWebServicePolicy.xml"
+          }
+        },
+		{
+          "ApiId": "OfferAPI",
+          "properties": {
+            "displayName": "OfferAPI",
+            "description": "Webservice for Offer to x32 BW system",
+            "path": "OfferAPI",
+            "specificationFormat": "wsdl",
+			"wsdlServiceName":"HA_OFF_TALEO_WSSN",
+			"wsdlEndpointName":"HA_OFF_TALEO_WSBN",
+            "specificationPath": "Apis\\OffersX32.wsdl",
+            "policySettingFile": "x32OfferWebServicePolicy.xml"
+          }
+        },
+		{
+          "ApiId": "JobSubmissionAPI",
+          "properties": {
+            "displayName": "JobSubmissionAPI",
+            "description": "Webservice for JobSubmission to x32 BW system",
+            "path": "JobSubmissionAPI",
+            "specificationFormat": "wsdl",
+			"wsdlServiceName":"HA_JOS_TALEO_WSSN",
+			"wsdlEndpointName":"HA_JOS_TALEO_WSBN",
+            "specificationPath": "Apis\\JobSubmissionX32.wsdl",
+            "policySettingFile": "x32JobSubWebServicePolicy.xml"
+          }
+        },
+		{
+          "ApiId": "OrgMasterAPI",
+          "properties": {
+            "displayName": "OrgMasterAPI",
+            "description": "Webservice for Organization to x32 BW system",
+            "path": "OrgMasterAPI",
+            "specificationFormat": "wsdl",
+			"wsdlServiceName":"HA_ORG_TALEO_WSSN",
+			"wsdlEndpointName":"HA_ORG_TALEO_WSBN",
+            "specificationPath": "Apis\\OrgMasterX32.wsdl",
+            "policySettingFile": "x32OrgMasterWebServicePolicy.xml"
+          }
+        },
+		{
+          "ApiId": "JobFieldAPI",
+          "properties": {
+            "displayName": "JobFieldAPI",
+            "description": "Webservice for JobField to x32 BW system",
+            "path": "JobFieldAPI",
+            "specificationFormat": "wsdl",
+			"wsdlServiceName":"HA_JOB_TALEO_WSSN",
+			"wsdlEndpointName":"HA_JOB_TALEO_WSBN",
+            "specificationPath": "Apis\\JobFieldX32.wsdl",
+            "policySettingFile": "x32JobFieldWebServicePolicy.xml"
+          }
+        },
+		{
+          "ApiId": "LocationAPI",
+          "properties": {
+            "displayName": "LocationAPI",
+            "description": "Webservice for Location to x32 BW system",
+            "path": "LocationAPI",
+            "specificationFormat": "wsdl",
+			"wsdlServiceName":"HA_LOC_TALEO_WSSN",
+			"wsdlEndpointName":"HA_LOC_TALEO_WSBN",
+            "specificationPath": "Apis\\LocationX32.wsdl",
+            "policySettingFile": "x32LocationWebServicePolicy.xml"
+          }
+        }
+      ],
+      "policies": {
+        "name": "policy",
+        "properties": {
+          "policyContent": ""
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsoap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="urn:sap-com:document:sap:soap:functions:mc-style" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:n1="urn:sap-com:document:sap:rfc:functions">
+    <wsdl:documentation>
+        <sidl:sidl xmlns:sidl="http://www.sap.com/2007/03/sidl" />
+    </wsdl:documentation>
+    <wsp:UsingPolicy wsdl:required="true" />
+    <wsp:Policy wsu:Id="BN__HA_JOB_TALEO_WSBN">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <saptrnbnd:OptimizedMimeSerialization xmlns:saptrnbnd="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" wsp:Optional="true" />
+                <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+                <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+                    <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+                        <wsp:Policy>
+                            <sp:TransportToken>
+                                <wsp:Policy>
+                                    <sp:HttpsToken>
+                                        <wsp:Policy>
+                                            <sp:HttpBasicAuthentication />
+                                        </wsp:Policy>
+                                    </sp:HttpsToken>
+                                </wsp:Policy>
+                            </sp:TransportToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:Basic128Rsa15 />
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict />
+                                </wsp:Policy>
+                            </sp:Layout>
+                        </wsp:Policy>
+                    </sp:TransportBinding>
+                </wsp:All>
+            </wsp:All>
+            <wsp:All>
+                <saptrnbnd:OptimizedXMLTransfer uri="http://xml.sap.com/2006/11/esi/esp/binxml" xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true" />
+                <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+                <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+                    <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+                        <wsp:Policy>
+                            <sp:TransportToken>
+                                <wsp:Policy>
+                                    <sp:HttpsToken>
+                                        <wsp:Policy>
+                                            <sp:HttpBasicAuthentication />
+                                        </wsp:Policy>
+                                    </sp:HttpsToken>
+                                </wsp:Policy>
+                            </sp:TransportToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:Basic128Rsa15 />
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict />
+                                </wsp:Policy>
+                            </sp:Layout>
+                        </wsp:Policy>
+                    </sp:TransportBinding>
+                </wsp:All>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="BN__HA_JOB_TALEO_WSBN_soap12">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <saptrnbnd:OptimizedMimeSerialization xmlns:saptrnbnd="http://schemas.xmlsoap.org/ws/2004/09/policy/optimizedmimeserialization" wsp:Optional="true" />
+                <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+                <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+                    <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+                        <wsp:Policy>
+                            <sp:TransportToken>
+                                <wsp:Policy>
+                                    <sp:HttpsToken>
+                                        <wsp:Policy>
+                                            <sp:HttpBasicAuthentication />
+                                        </wsp:Policy>
+                                    </sp:HttpsToken>
+                                </wsp:Policy>
+                            </sp:TransportToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:Basic128Rsa15 />
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict />
+                                </wsp:Policy>
+                            </sp:Layout>
+                        </wsp:Policy>
+                    </sp:TransportBinding>
+                </wsp:All>
+            </wsp:All>
+            <wsp:All>
+                <saptrnbnd:OptimizedXMLTransfer uri="http://xml.sap.com/2006/11/esi/esp/binxml" xmlns:saptrnbnd="http://www.sap.com/webas/710/soap/features/transportbinding/" wsp:Optional="true" />
+                <wsaw:UsingAddressing xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" wsp:Optional="true" />
+                <wsp:All xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy">
+                    <sp:TransportBinding xmlns:sp="http://docs.oasis-open.org/ws-sx/ws-securitypolicy/200702" xmlns:sapsp="http://www.sap.com/webas/630/soap/features/security/policy" xmlns:wsa="http://www.w3.org/2005/08/addressing" xmlns:wst="http://docs.oasis-open.org/ws-sx/ws-trust/200512" xmlns:wsu="http://schemas.xmlsoap.org/ws/2002/07/utility" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex">
+                        <wsp:Policy>
+                            <sp:TransportToken>
+                                <wsp:Policy>
+                                    <sp:HttpsToken>
+                                        <wsp:Policy>
+                                            <sp:HttpBasicAuthentication />
+                                        </wsp:Policy>
+                                    </sp:HttpsToken>
+                                </wsp:Policy>
+                            </sp:TransportToken>
+                            <sp:AlgorithmSuite>
+                                <wsp:Policy>
+                                    <sp:Basic128Rsa15 />
+                                </wsp:Policy>
+                            </sp:AlgorithmSuite>
+                            <sp:Layout>
+                                <wsp:Policy>
+                                    <sp:Strict />
+                                </wsp:Policy>
+                            </sp:Layout>
+                        </wsp:Policy>
+                    </sp:TransportBinding>
+                </wsp:All>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="IF___-N42_-CQHA_JOB_00001000">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <sapsession:Session xmlns:sapsession="http://www.sap.com/webas/630/soap/features/session/">
+                    <sapsession:enableSession>false</sapsession:enableSession>
+                </sapsession:Session>
+                <sapcentraladmin:CentralAdministration xmlns:sapcentraladmin="http://www.sap.com/webas/700/soap/features/CentralAdministration/" wsp:Optional="true">
+                    <sapcentraladmin:BusinessApplicationID>5220846C94D62990E10080000A874737</sapcentraladmin:BusinessApplicationID>
+                </sapcentraladmin:CentralAdministration>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsp:Policy wsu:Id="OP___-n42_-cqhaJob00001000">
+        <wsp:ExactlyOne>
+            <wsp:All>
+                <saptrhnw05:required xmlns:saptrhnw05="http://www.sap.com/NW05/soap/features/transaction/">no</saptrhnw05:required>
+                <sapcomhnd:enableCommit xmlns:sapcomhnd="http://www.sap.com/NW05/soap/features/commit/">false</sapcomhnd:enableCommit>
+                <sapblock:enableBlocking xmlns:sapblock="http://www.sap.com/NW05/soap/features/blocking/">true</sapblock:enableBlocking>
+                <saprmnw05:enableWSRM xmlns:saprmnw05="http://www.sap.com/NW05/soap/features/wsrm/">false</saprmnw05:enableWSRM>
+            </wsp:All>
+        </wsp:ExactlyOne>
+    </wsp:Policy>
+    <wsdl:types>
+        <xsd:schema attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:rfc:functions">
+            <xsd:simpleType name="char10">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="10" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="char250">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="250" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:simpleType name="char9">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="9" />
+                </xsd:restriction>
+            </xsd:simpleType>
+        </xsd:schema>
+        <xsd:schema attributeFormDefault="qualified" targetNamespace="urn:sap-com:document:sap:soap:functions:mc-style" xmlns:n0="urn:sap-com:document:sap:rfc:functions">
+            <xsd:import namespace="urn:sap-com:document:sap:rfc:functions" />
+            <xsd:simpleType name="RfcException.Message.Number">
+                <xsd:restriction base="xsd:string">
+                    <xsd:maxLength value="3" />
+                    <xsd:pattern value="\d*" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:complexType name="_-n42_-cqhaJob00001000">
+                <xsd:sequence>
+                    <xsd:element name="Jobfieldcode" type="n0:char250" />
+                    <xsd:element name="Jobfieldname" type="n0:char250" />
+                    <xsd:element name="Jobfieldlevel" type="n0:char9" />
+                    <xsd:element name="Jobfieldstatus" type="n0:char10" />
+                    <xsd:element name="Parentjfcode" type="n0:char250" />
+                    <xsd:element name="Parentjfname" type="n0:char250" />
+                    <xsd:element name="Parentjflevel" type="n0:char9" />
+                    <xsd:element name="Parentjfstatus" type="n0:char10" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="RfcException.Message">
+                <xsd:sequence>
+                    <xsd:element name="ID" type="xsd:string" />
+                    <xsd:element name="Number" type="tns:RfcException.Message.Number" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="_-n42_-cqhaJob00001000.RfcException">
+                <xsd:sequence>
+                    <xsd:element name="Name" type="tns:_-n42_-cqhaJob00001000.RfcExceptions" />
+                    <xsd:element name="Text" type="xsd:string" minOccurs="0" />
+                    <xsd:element name="Message" type="tns:RfcException.Message" minOccurs="0" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="_-n42_-wcqhaJob00001000">
+                <xsd:sequence>
+                    <xsd:element name="item" type="tns:_-n42_-cqhaJob00001000" minOccurs="0" maxOccurs="unbounded" />
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:simpleType name="_-n42_-cqhaJob00001000.RfcExceptions">
+                <xsd:restriction base="xsd:string">
+                    <xsd:enumeration value="InternalError" />
+                </xsd:restriction>
+            </xsd:simpleType>
+            <xsd:element name="_-n42_-cqhaJob00001000.Exception" type="tns:_-n42_-cqhaJob00001000.RfcException" />
+            <xsd:element name="_-n42_-cqhaJob00001000">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="Data" type="tns:_-n42_-wcqhaJob00001000" />
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <xsd:element name="_-n42_-cqhaJob00001000Response">
+                <xsd:complexType>
+                    <xsd:sequence />
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </wsdl:types>
+    <wsdl:message name="_-n42_-cqhaJob00001000">
+        <wsdl:part name="parameters" element="tns:_-n42_-cqhaJob00001000" />
+    </wsdl:message>
+    <wsdl:message name="_-n42_-cqhaJob00001000Response">
+        <wsdl:part name="parameter" element="tns:_-n42_-cqhaJob00001000Response" />
+    </wsdl:message>
+    <wsdl:message name="_-n42_-cqhaJob00001000.Exception">
+        <wsdl:part name="_-n42_-cqhaJob00001000.Exception" element="tns:_-n42_-cqhaJob00001000.Exception" />
+    </wsdl:message>
+    <wsdl:portType name="_-N42_-CQHA_JOB_00001000">
+        <wsdl:documentation>
+            <sapdoc:sapdoc xmlns:sapdoc="urn:sap:esi:documentation">
+                <sapdoc:docitem docURL="http://sapc32app01.emea.nsn-net.net:8000/sap/bc/esdt/docu/sd_text?sap-client=005&amp;sd_name=%2fN42%2fCQHA_JOB_00001000" />
+            </sapdoc:sapdoc>
+        </wsdl:documentation>
+        <wsdl:operation name="_-n42_-cqhaJob00001000">
+            <wsp:Policy>
+                <wsp:PolicyReference URI="#OP___-n42_-cqhaJob00001000" />
+            </wsp:Policy>
+            <wsdl:input message="tns:_-n42_-cqhaJob00001000" />
+            <wsdl:output message="tns:_-n42_-cqhaJob00001000Response" />
+            <wsdl:fault name="_-n42_-cqhaJob00001000.Exception" message="tns:_-n42_-cqhaJob00001000.Exception" />
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="HA_JOB_TALEO_WSBN" type="tns:_-N42_-CQHA_JOB_00001000">
+        <wsp:Policy>
+            <wsp:PolicyReference URI="#BN__HA_JOB_TALEO_WSBN" />
+        </wsp:Policy>
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="_-n42_-cqhaJob00001000">
+            <soap:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:_-N42_-CQHA_JOB_00001000:_-n42_-cqhaJob00001000Request" style="document" />
+            <wsdl:input>
+                <soap:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="_-n42_-cqhaJob00001000.Exception">
+                <soap:fault name="_-n42_-cqhaJob00001000.Exception" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="HA_JOB_TALEO_WSBN_soap12" type="tns:_-N42_-CQHA_JOB_00001000">
+        <wsp:Policy>
+            <wsp:PolicyReference URI="#BN__HA_JOB_TALEO_WSBN_soap12" />
+        </wsp:Policy>
+        <wsoap12:binding transport="http://schemas.xmlsoap.org/soap/http" style="document" />
+        <wsdl:operation name="_-n42_-cqhaJob00001000">
+            <wsoap12:operation soapAction="urn:sap-com:document:sap:soap:functions:mc-style:_-N42_-CQHA_JOB_00001000:_-n42_-cqhaJob00001000Request" style="document" />
+            <wsdl:input>
+                <wsoap12:body use="literal" />
+            </wsdl:input>
+            <wsdl:output>
+                <wsoap12:body use="literal" />
+            </wsdl:output>
+            <wsdl:fault name="_-n42_-cqhaJob00001000.Exception">
+                <wsoap12:fault name="_-n42_-cqhaJob00001000.Exception" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="HA_JOB_TALEO_WSSN">
+        <wsdl:port name="HA_JOB_TALEO_WSBN" binding="tns:HA_JOB_TALEO_WSBN">
+            <soap:address location="https://sapc32app01.emea.nsn-net.net:44300/sap/bc/srt/rfc/n42/cqha_job_00001000/005/ha_job_taleo_wssn/ha_job_taleo_wsbn" />
+        </wsdl:port>
+        <wsdl:port name="HA_JOB_TALEO_WSBN_soap12" binding="tns:HA_JOB_TALEO_WSBN_soap12">
+            <wsoap12:address location="https://sapc32app01.emea.nsn-net.net:44300/sap/bc/srt/rfc/n42/cqha_job_00001000/005/ha_job_taleo_wssn/ha_job_taleo_wsbn" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
