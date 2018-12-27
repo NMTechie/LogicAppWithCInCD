@@ -13,7 +13,7 @@
 <policies>
     <inbound>
         <base />
-        <authentication-basic username="WS_HRAnalytics" password="4WebServices" />
+        <authentication-basic username="basic-auth-uid" password="basic-auth-pwd" />
     </inbound>
     <backend>
         <base />
