@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "value": "nokia-ipaas-dev-we-lga-ot-p32-15_GetOfferResult"
+    },
+    "hra_azuretables_Connection_Name": {
+      "value": "nok-ipaas-dev-we-ot-p32-15-azuretable"
+    },
+    "hra_azuretables_Connection_DisplayName": {
+      "value": "nok-ipaas-dev-we-ot-p32-15-azuretable"
+    },
+    "azuretables_1_storageaccount": {
+      "value": "ipaasdevwesharedsta01"
+    },
+    "rsgname": {
+      "value": "ipaas-dev-we-ourtalent-p32-01"
+    },
+    "childLAName": {
+      "value": "nokia-ipaas-dev-we-lga-ot-p32-13_SoapCall"
+    },
+    "sharedrsgname": {
+      "value": "ipaas-dev-we-shared-services-01"
+    },
+    "logicAppState": {
+      "value": "Enabled"
+    },
+    "oms-Workspace-Name": { "value": "nok-ipaas-dev-we-oms-01" },
+    "X32OfferSoaPAction": { "value": "urn:sap-com:document:sap:soap:functions:mc-style:_-N42_-CQHA_OFF_00001000:_-n42_-cqhaOff00001000Request" },
+    "X32OfferURI": { "value": "https://nok-ipaas-dev-we-apm-01.azure-api.net/OfferAPI" },
+    "shared-IntegrationAccount-Name": { "value": "nok-ipaas-dev-we-iac-01" }
+  }
+}

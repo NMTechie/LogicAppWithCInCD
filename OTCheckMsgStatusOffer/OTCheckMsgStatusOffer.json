@@ -1,0 +1,503 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "metadata": {
+        "description": "Name of the Logic App."
+      }
+    },
+    "logicAppLocation": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "allowedValues": [
+        "[resourceGroup().location]",
+        "eastasia",
+        "southeastasia",
+        "centralus",
+        "eastus",
+        "eastus2",
+        "westus",
+        "northcentralus",
+        "southcentralus",
+        "northeurope",
+        "westeurope",
+        "japanwest",
+        "japaneast",
+        "brazilsouth",
+        "australiaeast",
+        "australiasoutheast",
+        "southindia",
+        "centralindia",
+        "westindia",
+        "canadacentral",
+        "canadaeast",
+        "uksouth",
+        "ukwest",
+        "westcentralus",
+        "westus2"
+      ],
+      "metadata": {
+        "description": "Location of the Logic App."
+      }
+    },
+    "hra_azuretables_Connection_Name": {
+      "type": "string"
+    },
+    "hra_azuretables_Connection_DisplayName": {
+      "type": "string"
+    },
+    "azuretables_1_storageaccount": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of your storage account"
+      },
+      "defaultValue": "ipaasdevwesharedsta01"
+    },
+    "rsgname": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "childLAName": {
+      "type": "string",
+      "defaultValue": ""
+    },
+    "sharedrsgname": {
+      "type": "string"
+    },
+    "logicAppState": { "type": "string" },
+    "oms-Workspace-Name": { "type": "string" },
+    "X32OfferSoaPAction": { "type": "string" },
+    "X32OfferURI": { "type": "string" },
+    "shared-IntegrationAccount-Name": { "type": "string" }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "name": "[parameters('logicAppName')]",
+      "type": "Microsoft.Logic/workflows",
+      "location": "[parameters('logicAppLocation')]",
+      "tags": {
+        "displayName": "LogicApp"
+      },
+      "apiVersion": "2016-06-01",
+      "properties": {
+        "state": "[parameters('logicAppState')]",
+        "integrationAccount": {
+          "id": "[resourceId(parameters('sharedrsgname') , 'Microsoft.Logic/integrationAccounts', parameters('shared-IntegrationAccount-Name'))]"
+        },
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "actions": {
+            "GetPendingQueries": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['azuretables']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/Tables/@{encodeURIComponent('TaleoServiceCallStatus')}/entities",
+                "queries": {
+                  "$filter": "(TaleoQueryEntity eq 'Offer') and (TaleoMessageStatus eq '' or TaleoMessageStatus eq '1' or TaleoMessageStatus eq '2' or TaleoMessageStatus eq '3' or TaleoMessageStatus eq '4')"
+                }
+              },
+              "runAfter": {
+                "FetchStatusCheckQuery": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "InitializeQueryStatusObject": {
+              "type": "InitializeVariable",
+              "inputs": {
+                "variables": [
+                  {
+                    "name": "itemMessageStatus",
+                    "type": "Array",
+                    "value": [
+                      "PartitionKey",
+                      "TaleoCorelationKey",
+                      "TaleoMessageKey",
+                      "TaleoMessageStatus"
+                    ]
+                  }
+                ]
+              },
+              "runAfter": {}
+            },
+            "InitializeResponseVariable": {
+              "type": "InitializeVariable",
+              "inputs": {
+                "variables": [
+                  {
+                    "name": "GetLargeDocumentByKeyResponse",
+                    "type": "String",
+                    "value": "NULL"
+                  }
+                ]
+              },
+              "runAfter": {
+                "InitializeQueryStatusObject": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "FetchStatusCheckQuery": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['azuretables']['connectionId']"
+                  }
+                },
+                "method": "get",
+                "path": "/Tables/@{encodeURIComponent('TaleoServiceMetaData')}/entities(PartitionKey='@{encodeURIComponent('getMessageByKey')}',RowKey='@{encodeURIComponent('getMessageByKey')}')"
+              },
+              "runAfter": {
+                "InitializeResponseVariable": [
+                  "Succeeded"
+                ]
+              }
+            },
+            "ForeachPendingQuery": {
+              "type": "Foreach",
+              "foreach": "@body('GetPendingQueries')?['value']",
+              "actions": {
+                "CallOTAPIToCheckStatus": {
+                  "type": "Workflow",
+                  "inputs": {
+                    "host": {
+                      "triggerName": "manual",
+                      "workflow": {
+                        "id": "[concat(subscription().id, '/resourceGroups/', parameters('rsgname'),'/providers/Microsoft.Logic/workflows/',parameters('childLAName'))]"
+                      }
+                    },
+                    "body": {
+                      "ServiceBody": "@{replace(body('FetchStatusCheckQuery')?['ServiceBody'],'??',item()['TaleoMessageKey'])}",
+                      "ServiceContentType": "@{body('FetchStatusCheckQuery')?['ServiceContentType']}",
+                      "ServiceMIMEVersion": "@{body('FetchStatusCheckQuery')?['ServiceMIMEVersion']}",
+                      "ServiceMethod": "@{body('FetchStatusCheckQuery')?['ServiceMethod']}",
+                      "ServiceSOAPAction": "@{body('FetchStatusCheckQuery')?['ServiceSOAPAction']}",
+                      "ServiceURI": "@{body('FetchStatusCheckQuery')?['ServiceURI']}"
+                    }
+                  },
+                  "runAfter": {}
+                },
+                "UpdateStatusChek": {
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "itemMessageStatus",
+                    "value": [
+                      "@items('ForeachPendingQuery')['PartitionKey']",
+                      "@json(xml(string(actionBody('CallOTAPIToCheckStatus'))))['soap:Envelope']['soap:Body']['ns1:getMessageByKeyResponse']['IntegrationMessage']['CorrelationKey']",
+                      "@json(xml(string(actionBody('CallOTAPIToCheckStatus'))))['soap:Envelope']['soap:Body']['ns1:getMessageByKeyResponse']['IntegrationMessage']['MessageKey']",
+                      "@json(xml(string(actionBody('CallOTAPIToCheckStatus'))))['soap:Envelope']['soap:Body']['ns1:getMessageByKeyResponse']['IntegrationMessage']['State']"
+                    ]
+                  },
+                  "runAfter": {
+                    "CallOTAPIToCheckStatus": [
+                      "Succeeded"
+                    ]
+                  }
+                },
+                "CheckCompletedQuery": {
+                  "type": "If",
+                  "expression": {
+                    "and": [
+                      {
+                        "equals": [
+                          "@int(variables('itemMessageStatus')[3])",
+                          5
+                        ]
+                      }
+                    ]
+                  },
+                  "actions": {
+                    "FetchGetLargeDocumentQuery": {
+                      "type": "ApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connection": {
+                            "name": "@parameters('$connections')['azuretables']['connectionId']"
+                          }
+                        },
+                        "method": "get",
+                        "path": "/Tables/@{encodeURIComponent('TaleoServiceMetaData')}/entities(PartitionKey='@{encodeURIComponent('getLargeDocumentByKey')}',RowKey='@{encodeURIComponent('getLargeDocumentByKey')}')"
+                      },
+                      "runAfter": {}
+                    },
+                    "CallTaleoServiceForResult": {
+                      "type": "Workflow",
+                      "inputs": {
+                        "host": {
+                          "triggerName": "manual",
+                          "workflow": {
+                            "id": "[concat(subscription().id, '/resourceGroups/', parameters('rsgname'),'/providers/Microsoft.Logic/workflows/',parameters('childLAName'))]"
+                          }
+                        },
+                        "body": {
+                          "ServiceBody": "@replace(body('FetchGetLargeDocumentQuery')?['ServiceBody'],'??',variables('itemMessageStatus')[1])",
+                          "ServiceContentType": "@body('FetchGetLargeDocumentQuery')?['ServiceContentType']",
+                          "ServiceMIMEVersion": "@body('FetchGetLargeDocumentQuery')?['ServiceMIMEVersion']",
+                          "ServiceMethod": "@body('FetchGetLargeDocumentQuery')?['ServiceMethod']",
+                          "ServiceSOAPAction": "@body('FetchGetLargeDocumentQuery')?['ServiceSOAPAction']",
+                          "ServiceURI": "@body('FetchGetLargeDocumentQuery')?['ServiceURI']"
+                        }
+                      },
+                      "runAfter": {
+                        "FetchGetLargeDocumentQuery": [
+                          "Succeeded"
+                        ]
+                      }
+                    },
+                    "SetLargeDocumentByKeyResponse": {
+                      "inputs": {
+                        "name": "GetLargeDocumentByKeyResponse",
+                        "value": "@actionBody('CallTaleoServiceForResult')['$multipart'][1]['body']"
+                      },
+                      "runAfter": {
+                        "CallTaleoServiceForResult": [
+                          "Succeeded"
+                        ]
+                      },
+                      "type": "SetVariable"
+                    },
+                    "TransformToX32Format": {
+                      "inputs": {
+                        "content": "@variables('GetLargeDocumentByKeyResponse')",
+                        "integrationAccount": {
+                          "map": {
+                            "name": "@{item()['TransformMap']}"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "SetLargeDocumentByKeyResponse": [
+                          "Succeeded"
+                        ]
+                      },
+                      "type": "Xslt"
+                    },
+                    "CallX32WebService": {
+                      "inputs": {
+                        "body": {
+                          "ServiceBody": "@{base64ToString(body('TransformToX32Format')?['$content'])}",
+                          "ServiceContentType": "application/soap+xml",
+                          "ServiceMIMEVersion": "1.0",
+                          "ServiceMethod": "POST",
+                          "ServiceSOAPAction": "[parameters('X32OfferSoaPAction')]",
+                          "ServiceURI": "[parameters('X32OfferURI')]"
+                        },
+                        "host": {
+                          "triggerName": "manual",
+                          "workflow": {
+                            "id": "[concat(subscription().id, '/resourceGroups/', parameters('rsgname'),'/providers/Microsoft.Logic/workflows/',parameters('childLAName'))]"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "TransformToX32Format": [
+                          "Succeeded"
+                        ]
+                      },
+                      "type": "Workflow"
+                    },
+                    "UpdateSuccessRun": {
+                      "inputs": {
+                        "body": {
+                          "SuccessRunDate": "@formatDateTime(utcNow(),'yyyy-MM-ddT00:00:00')"
+                        },
+                        "host": {
+                          "connection": {
+                            "name": "@parameters('$connections')['azuretables']['connectionId']"
+                          }
+                        },
+                        "method": "patch",
+                        "path": "/Tables/@{encodeURIComponent('TaleoServiceSuccessRun')}/entities(PartitionKey='@{encodeURIComponent('submitLargeDocument')}',RowKey='@{encodeURIComponent(item()['TaleoQueryEntity'])}')"
+                      },
+                      "runAfter": {
+                        "CallX32WebService": [
+                          "Succeeded"
+                        ]
+                      },
+                      "type": "ApiConnection"
+                    },
+                    "DeleteCallStatus": {
+                      "inputs": {
+                        "host": {
+                          "connection": {
+                            "name": "@parameters('$connections')['azuretables']['connectionId']"
+                          }
+                        },
+                        "method": "delete",
+                        "path": "/Tables/@{encodeURIComponent('TaleoServiceCallStatus')}/entities/etag(PartitionKey='@{encodeURIComponent(item()['PartitionKey'])}',RowKey='@{encodeURIComponent(item()['RowKey'])}')"
+                      },
+                      "runAfter": {
+                        "UpdateSuccessRun": [
+                          "Succeeded"
+                        ]
+                      },
+                      "type": "ApiConnection"
+                    }
+                  },
+                  "runAfter": {
+                    "UpdateStatusChek": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "CheckPendingQueryStatus": {
+                        "type": "If",
+                        "expression": {
+                          "and": [
+                            {
+                              "less": [
+                                "@int(variables('itemMessageStatus')?[3])",
+                                5
+                              ]
+                            }
+                          ]
+                        },
+                        "actions": {
+                          "UpdateCallStatusForRetry": {
+                            "type": "ApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connection": {
+                                  "name": "@parameters('$connections')['azuretables']['connectionId']"
+                                }
+                              },
+                              "method": "patch",
+                              "body": {
+                                "TaleoCorelationKey": "@variables('itemMessageStatus')?[1]",
+                                "TaleoMessageKey": "@variables('itemMessageStatus')?[2]",
+                                "TaleoMessageStatus": "@variables('itemMessageStatus')?[3]"
+                              },
+                              "path": "/Tables/@{encodeURIComponent('TaleoServiceCallStatus')}/entities(PartitionKey='@{encodeURIComponent(variables('itemMessageStatus')?[0])}',RowKey='@{encodeURIComponent(variables('itemMessageStatus')?[0])}')"
+                            },
+                            "runAfter": {}
+                          }
+                        },
+                        "runAfter": {},
+                        "else": {
+                          "actions": {
+                            "DeleteCallStatusEntry": {
+                              "type": "ApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connection": {
+                                    "name": "@parameters('$connections')['azuretables']['connectionId']"
+                                  }
+                                },
+                                "method": "delete",
+                                "path": "/Tables/@{encodeURIComponent('TaleoServiceCallStatus')}/entities/etag(PartitionKey='@{encodeURIComponent(variables('itemMessageStatus')?[0])}',RowKey='@{encodeURIComponent(variables('itemMessageStatus')?[0])}')"
+                              },
+                              "runAfter": {}
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "GetPendingQueries": [
+                  "Succeeded"
+                ]
+              }
+            }
+          },
+          "parameters": {
+            "$connections": {
+              "defaultValue": {},
+              "type": "Object"
+            }
+          },
+          "triggers": {
+            "CheckMsgSchedular": {
+              "type": "Recurrence",
+              "recurrence": {
+                "frequency": "Minute",
+                "interval": 10
+              }
+            }
+          },
+          "contentVersion": "1.0.0.0",
+          "outputs": {}
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "azuretables": {
+                "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'azuretables')]",
+                "connectionId": "[resourceId('Microsoft.Web/connections', parameters('hra_azuretables_Connection_Name'))]",
+                "connectionName": "[parameters('hra_azuretables_Connection_Name')]"
+              }
+            }
+          }
+        }
+      },
+      "resources": [
+        {
+          "name": "[concat('Microsoft.Insights/service')]",
+          "type": "providers/diagnosticSettings",
+          "apiVersion": "2015-07-01",
+          "dependsOn": [
+            "[concat('Microsoft.Logic/workflows/', parameters('logicAppName'))]"
+          ],
+          "properties": {
+            "workspaceId": "[resourceId(parameters('sharedrsgname'),'Microsoft.OperationalInsights/workspaces', parameters('oms-Workspace-Name'))]",
+            "logs": [
+              {
+                "category": "WorkflowRuntime",
+                "enabled": true,
+                "retentionPolicy": {
+                  "days": 30,
+                  "enabled": true
+                }
+              }
+            ],
+            "metrics": [
+              {
+                "timeGrain": "AllMetrics",
+                "category": "AllMetrics",
+                "enabled": true,
+                "retentionPolicy": {
+                  "enabled": true,
+                  "days": 30
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', parameters('hra_azuretables_Connection_Name'))]"
+      ]
+    },
+    {
+      "type": "MICROSOFT.WEB/CONNECTIONS",
+      "apiVersion": "2016-06-01",
+      "name": "[parameters('hra_azuretables_Connection_Name')]",
+      "location": "[parameters('logicAppLocation')]",
+      "properties": {
+        "api": {
+          "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', parameters('logicAppLocation'), '/managedApis/', 'azuretables')]"
+        },
+        "displayName": "[parameters('hra_azuretables_Connection_DisplayName')]",
+        "parameterValues": {
+          "storageaccount": "[parameters('azuretables_1_storageaccount')]",
+          "sharedkey": "[listKeys(resourceId(parameters('sharedrsgname'),'Microsoft.Storage/storageAccounts', parameters('azuretables_1_storageaccount')),providers('Microsoft.Storage', 'storageAccounts').apiVersions[0]).keys[0].value]"
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}
