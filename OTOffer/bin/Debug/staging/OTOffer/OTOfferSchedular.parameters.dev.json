@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "value": "nokia-ipaas-dev-we-lga-ot-p32-02_Offer"
+    },
+    "childLAName": {
+      "value": "nokia-ipaas-dev-we-lga-ot-p32-12_SubmitQuery"
+    },    
+    "rsgname": {
+      "value": "ipaas-dev-we-ourtalent-p32-01"
+    },   
+    "sharedrsgname": {
+      "value": "ipaas-dev-we-shared-services-01"
+    },
+    "oms-Workspace-Name": {
+      "value": "nok-ipaas-dev-we-oms-01"
+    },
+    "logicAppState": {
+      "value": "Enabled"
+    },
+    "schedularstarttime": {
+      "value": "2018-12-04T00:00:00"
+    }
+  }
+  }
