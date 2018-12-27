@@ -5,7 +5,7 @@
     {
       "Id": "<value>",
       "properties": {
-        "displayName": "HRAS4UOTX32",
+        "displayName": "<Any description that you want to give>",
         "description": "<Any description that you want to give>",
         "state": "Published",
         "subscriptionRequired": false,
