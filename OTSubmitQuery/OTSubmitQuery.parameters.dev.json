@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "logicAppName": {
+      "value": "<<Value>>"
+    },
+    "childLAName": {
+      "value": "<<Value>>"
+    },
+    "hra_azuretables_Connection_Name": {
+      "value": "<<Value>>"
+    },
+    "hra_azuretables_Connection_Name_DisplayName": {
+      "value": "<<Value>>"
+    },
+    "rsgname": {
+      "value": "<<Value>>"
+    },
+    "azuretables_1_storageaccount": {
+      "value": "<<Value>>"
+    },
+    "sharedrsgname": {
+      "value": "<<Value>>"
+    },
+    "oms-Workspace-Name": {
+      "value": "<<Value>>"
+    },
+    "logicAppState": {
+      "value": "Enabled"
+    }
+  }
+  }
