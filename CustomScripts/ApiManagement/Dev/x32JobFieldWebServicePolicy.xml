@@ -13,8 +13,8 @@
 <policies>
     <inbound>
         <base />
-        <set-backend-service base-url="https://10.130.221.176:44300/sap/bc/srt/rfc/n42/cqha_job_00001000/005/ha_job_taleo_wssn/ha_job_taleo_wsbn" />
-        <authentication-basic username="CPC_X32_HRA" password="1234$IPass" />
+        <set-backend-service base-url="https://<<ip of the url domain as to handle self-sign certificate error through create bk-end>>:44300/the rest url part" />
+        <authentication-basic username="basic-auth-uid" password="basic-auth-pwd" />
     </inbound>
     <backend>
         <base />
